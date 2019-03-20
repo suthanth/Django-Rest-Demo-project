@@ -54,6 +54,8 @@ class HelloApiView(APIView):
 class HelloViewSet(viewsets.ViewSet):
     """Creating Hello view set"""
 
+
+
     def list(self, request):
         """Returns a hello message"""
 
@@ -64,3 +66,36 @@ class HelloViewSet(viewsets.ViewSet):
         ]
 
         return Response({'message':'hello', 'a_viewset':a_viewset})
+
+    def create(self, request):
+        """creates a new hello message"""
+
+        serializer = serializers.HelloSerializer(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.data.get('name')
+            message = "hello {0}".format(name)
+            return Response({"message":message})
+
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        """retrieve the message"""
+
+        return Response({'Http method':'GET'})
+
+    def update(self, request, pk=None):
+        """Handles updating of an object"""
+
+        return Response({"http method":"PUT"})
+
+    def partial_update(self, request, pk=None):
+        """Handles partial update """
+
+        return Response({"http method":"patch"})
+
+    def destroy(self, request, pk=None):
+        """destroy an objects"""
+
+        return Response({"http method":"delete"})
